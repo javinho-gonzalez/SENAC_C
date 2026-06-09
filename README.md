@@ -64,4 +64,4 @@ Certifique-se de ter um ambiente baseado em Unix (Linux/macOS) ou WSL no Windows
 ### Passo a Passo
 1. Clone o repositório para sua máquina local:
    ```bash
-   git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+   git clone [https://github.com/javinho-gonzalez/SENAC_C.git]
