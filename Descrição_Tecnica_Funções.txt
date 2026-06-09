@@ -1,0 +1,1048 @@
+
+===============================================================================
+                       DESCRITIVO TÉCNICO DE FUNÇÕES DE C
+                    
+===============================================================================
+
+Este documento contém a especificação técnica, comportamento detalhado e exemplos 
+de implementação 
+
+-------------------------------------------------------------------------------
+FUNÇÕES DE CLASSIFICAÇÃO E CONVERSÃO 
+-------------------------------------------------------------------------------
+
+1.1 sc_isalpha
+-------------------------------------------------------------------------------
+Descrição: Verifica se o caractere fornecido é uma letra do alfabeto 
+(maiúscula ou minúscula).
+
+Protótipo: int sc_isalpha(int c);
+
+Comportamento e Valores de Retorno:
+Retorna um valor diferente de zero (Verdadeiro) se o caractere estiver dentro 
+do intervalo ASCII ['A'..'Z'] (65 a 90) ou ['a'..'z'] (97 a 122).
+Retorna 0 (Falso) para qualquer outro valor de caractere.
+
+Exemplo Prático de Uso:
+Validar se uma entrada contém apenas letras estruturais (ex: siglas ou nomes).
+```c
+if (sc_isalpha('A')) // Retorna Verdadeiro
+if (sc_isalpha('4')) // Retorna Falso
+
+Casos de borda: O "Ponteiro NULL" aqui: Se você tentar passar NULL como argumento
+para ela (por exemplo, sc_isalpha(NULL)),vão retornar 0 (Falso), porque \0 não é 
+letra nem número.
+
+-----------------------------------------------------------------------------
+1.2 sc_isdigit
+-------------------------------------------------------------------------------
+Descrição: Verifica se o caractere fornecido representa um dígito numérico
+decimal de 0 a 9.
+
+Protótipo: int sc_isdigit(int c);
+
+Comportamento e Valores de Retorno:
+Retorna um valor diferente de zero (Verdadeiro) se o caractere estiver contido
+no intervalo ASCII ['0'..'9'] (48 a 57).Retorna 0 (Falso) caso contrário.
+
+Exemplo Prático de Uso:
+Garantir que os caracteres lidos de uma entrada de telefone ou CPF sejam apenas
+números antes de processá-los.
+if (sc_isdigit('7')) // Retorna Verdadeiro
+if (sc_isdigit('a')) // Retorna Falso
+Casos de borda: O "Ponteiro NULL" aqui: Se você tentar passar NULL como argumento 
+para elas (por exemplo, sc_isdigit(NULL)),vão retornar 0, o compilador vai
+converter o NULL para o número 0.
+
+
+------------------------------------------------------------------------------
+1.3 sc_isalnum
+-------------------------------------------------------------------------------
+Descrição: Verifica se o caractere fornecido é alfanumérico (uma letra ou um
+dígito decimal).
+
+Protótipo: int sc_isalnum(int c);
+
+Comportamento e Valores de Retorno:
+
+Retorna um valor diferente de zero (Verdadeiro) se o caractere passar no teste
+de sc_isalpha OU no teste de sc_isdigit.
+
+Retorna 0 (Falso) se for um caractere especial, espaço ou de controle.
+
+Exemplo Prático de Uso:
+Limpar strings ou validar nomes de usuário (comumente restritos a letras e números).
+if (sc_isalnum('b')) // Retorna Verdadeiro
+if (sc_isalnum('9')) // Retorna Verdadeiro
+if (sc_isalnum('$')) // Retorna Falso
+
+Casos de borda: O "Ponteiro NULL" aqui: Se você tentar passar NULL como argumento 
+para elas (por exemplo, sc_isalnum(NULL)),vão retornar 0, o compilador vai
+converter o NULL para o número 0.
+
+------------------------------------------------------------------------------
+1.4 sc_isascii
+-------------------------------------------------------------------------------
+Descrição: Verifica se o caractere pertence à tabela ASCII padrão de 7 bits.
+
+Protótipo: int sc_isascii(int c);
+
+Comportamento e Valores de Retorno:
+
+Retorna um valor diferente de zero (Verdadeiro) se o valor inteiro de 'c'
+estiver entre 0 e 127 inclusive.
+
+Retorna 0 (Falso) para caracteres estendidos (como ISO-8859-1 ou UTF-8 acima
+de 127).
+
+Exemplo Prático de Uso:
+Filtrar e rejeitar caracteres especiais estranhos ou corrompidos vindos de
+transmissões de rede antigas que aceitam apenas ASCII de 7 bits.
+if (sc_isascii(65))   // Retorna Verdadeiro ('A')
+if (sc_isascii(200))  // Retorna Falso (Caractere estendido)
+
+Casos de borda: O "Ponteiro NULL" aqui: Se você tentar passar NULL como argumento 
+para elas (por exemplo, sc_isascii(NULL)),vão retornar 0, o compilador vai
+converter o NULL para o número 0.
+
+------------------------------------------------------------------------------
+1.5 sc_isprint
+-------------------------------------------------------------------------------
+Descrição: Verifica se o caractere é imprimível na tela, incluindo o caractere
+de espaço em branco.
+
+Protótipo: int sc_isprint(int c);
+
+Comportamento e Valores de Retorno:
+
+Retorna um valor diferente de zero (Verdadeiro) se 'c' for um caractere visual
+ou espaço, correspondendo ao intervalo decimal ASCII de 32 (espaço) a 126 ('~').
+
+Retorna 0 (Falso) para caracteres de controle (como '\n', '\t', ou DEL (127)).
+
+Exemplo Prático de Uso:
+Higienizar strings capturadas do teclado para exibição em interfaces gráficas ou
+logs simples, evitando caracteres de escape que quebram o layout.
+if (sc_isprint(' '))  // Retorna Verdadeiro (32)
+if (sc_isprint('\\n')) // Retorna Falso (Caractere de controle)
+
+Casos de borda: O "Ponteiro NULL" aqui: Se você tentar passar NULL como argumento 
+para elas (por exemplo, sc_isprint(NULL)),vão retornar 0, o compilador vai
+converter o NULL para o número 0.
+------------------------------------------------------------------------------
+1.6 sc_toupper
+-------------------------------------------------------------------------------
+Descrição: Converte um caractere alfabético minúsculo para maiúsculo.
+
+Protótipo: int sc_toupper(int c);
+
+Comportamento e Valores de Retorno:
+
+Se 'c' for uma letra minúscula (intervalo ['a'..'z']), a função retorna a sua
+versão maiúscula equivalente subtraindo o deslocamento fixo da tabela ASCII (32).
+Se 'c' já for maiúsculo ou não for uma letra, retorna o próprio valor original.
+
+Exemplo Prático de Uso:
+Normalizar comandos textuais para que o sistema aceite de forma insensível a
+maiúsculas/minúsculas (Ex: 'sair' ou 'SAIR').
+char maiusculo = sc_toupper('g'); // Retorna 'G'
+char mantido    = sc_toupper('4'); // Retorna '4'
+
+Casos de borda: O "Ponteiro NULL" aqui: Se você tentar passar NULL como argumento 
+para elas (por exemplo, sc_toupper(NULL)),vão retornar 0, o compilador vai
+converter o NULL para o número 0.
+
+------------------------------------------------------------------------------
+1.7 sc_tolower
+-------------------------------------------------------------------------------
+Descrição: Converte um caractere alfabético maiúsculo para minúsculo.
+
+Protótipo: int sc_tolower(int c);
+
+Comportamento e Valores de Retorno:
+
+Se 'c' for uma letra maiúscula (intervalo ['A'..'Z']), retorna a versão
+minúscula somando o deslocamento de 32 na tabela ASCII.
+Se 'c' já for minúsculo ou não for uma letra, retorna o próprio valor intacto.
+
+Exemplo Prático de Uso:
+Armazenar e-mails em bancos de dados de forma padronizada em letras minúsculas.
+char minusculo = sc_tolower('H'); // Retorna 'h'
+char mantido   = sc_tolower('$'); // Retorna '$'
+
+Casos de borda: O "Ponteiro NULL" aqui: Se você tentar passar NULL como argumento 
+para elas (por exemplo, sc_tolower(NULL)),vão retornar 0, o compilador vai
+converter o NULL para o número 0.
+
+------------------------------------------------------------------------------
+1.8 sc_atoi
+-------------------------------------------------------------------------------
+Descrição: Converte uma string que representa uma sequência numérica em um
+número inteiro (ASCII to Integer).
+
+Protótipo: int sc_atoi(const char *nptr);
+
+Comportamento e Valores de Retorno:
+
+Ignora quaisquer caracteres de espaço em branco iniciais (como espaços,
+tabulações '\t', quebras de linha '\n').
+
+Avalia um caractere de sinal opcional ('+' ou '-').
+
+Processa a sequência de caracteres numéricos subsequentes até encontrar o
+primeiro caractere não numérico, calculando o valor final acumulado.
+
+Retorna o número inteiro resultante. Se nenhum número válido puder ser extraído
+ou a string começar direto com letras, retorna 0.
+
+Exemplo Prático de Uso:
+Transformar argumentos recebidos pela linha de comando (via argv) ou de arquivos
+de configuração em inteiros reais utilizáveis em operações matemáticas.
+int n1 = sc_atoi("   -4299"); // Retorna o inteiro -4299
+int n2 = sc_atoi("42_texto"); // Retorna o inteiro 42
+int n3 = sc_atoi("texto_42"); // Retorna 0 (Início inválido)
+
+Casos de borda: Se você passar NULL para a sc_atoi, o programa vai tentar ler 
+o texto contido no endereço 0 logo na primeira linha (geralmente ao tentar pular
+os espaços com um while (*nptr)). Isso resultará em um Crash imediato 
+(Segmentation Fault).
+
+-------------------------------------------------------------------------------
+FUNÇÕES DE MANIPULAÇÃO E MEMORIA
+-------------------------------------------------------------------------------
+
+1.9 sc_memset
+-------------------------------------------------------------------------------
+Protótipo: void *sc_memset(void *b, int c, size_t len);
+
+Parâmetros:
+b: Ponteiro genérico para o início do bloco de memória que será preenchido.
+c: O valor (convertido para unsigned char) que será carimbado na memória.
+len: A quantidade exata de bytes que receberão esse valor.
+
+Valor de Retorno: Retorna o ponteiro original b em caso de sucesso.
+
+Descrição Detalhada: A função entra em um bloco de memória bruta e, usando um 
+laço, preenche cada byte sequencialmente com o caractere ou valor contido em c.
+Para fazer isso de byte em byte com segurança, ela converte o ponteiro b 
+internamente para unsigned char *. É a função ideal para "mascarar" dados ou
+resetar buffers.
+
+Casos de Borda:Se b for NULL: Crash (Segmentation Fault) ao tentar escrever no
+endereço zero. Se len for 0: O loop não executa; nenhuma alteração é feita e 
+retorna b.
+
+------------------------------------------------------------------------------
+1.10 sc_bzero
+-------------------------------------------------------------------------------
+Protótipo: void sc_bzero(void *s, size_t n);
+
+Parâmetros:
+s: Ponteiro genérico para a área de memória que será zerada.
+n: Quantidade de bytes que serão preenchidos com zero.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Uma função especializada em segurança e inicialização. 
+Ela limpa o bloco de memória apontado por s, preenchendo todos os n bytes com o
+valor 0 (ou '\0'). Ela faz isso de forma elegante reutilizando o código da anterior,
+chamando sc_memset(s, 0, n).
+
+Casos de Borda:
+Se s for NULL: Crash (Segmentation Fault) originado dentro da sc_memset. Se n for 0: 
+A função retorna imediatamente sem alterar nada.
+
+------------------------------------------------------------------------------
+1.11 sc_memcpy
+-------------------------------------------------------------------------------
+
+Protótipo: void *sc_memcpy(void *dst, const void *src, size_t n);
+
+Parâmetros:
+dst: Ponteiro para o bloco de memória de destino (onde os dados serão colados).
+src: Ponteiro para o bloco de memória de origem (de onde os dados serão lidos).
+n: O número total de bytes a serem copiados.
+
+Valor de Retorno: Retorna o ponteiro de destino original dst.
+
+Descrição Detalhada: Clona um bloco de dados bruto de um lugar para o outro. 
+Convertendo ambos os ponteiros para unsigned char *, ela lê src[i] e escreve em
+dst[i] sequencialmente de frente para trás. Atenção: Esta função assume que src
+e dst estão em lugares totalmente separados e não trata sobreposição de memória.
+
+Casos de Borda: Se dst ou src forem NULL: Crash (Segmentation Fault) ao tentar
+ler/escrever. Se n for 0: Retorna dst imediatamente sem ler ou escrever nada.
+
+------------------------------------------------------------------------------
+1.12 sc_memmove
+-------------------------------------------------------------------------------
+Protótipo: void *sc_memmove(void *dst, const void *src, size_t len);
+
+Parâmetros:
+dst: Ponteiro para a memória de destino.
+src: Ponteiro para a memória de origem.
+len: Quantidade de bytes a serem movidos.
+
+Valor de Retorno: Retorna o ponteiro de destino original dst.
+
+Descrição Detalhada: Move dados de forma segura, tratando sobreposições dentro 
+do mesmo array. Ela faz uma checagem inteligente: se o destino dst estiver
+posicionado na memória depois da origem src, ela faz a cópia de trás para frente
+(da direita para a esquerda). Caso contrário, copia de frente para trás. Isso 
+impede que os dados da frente sejam destruídos antes de serem lidos.
+
+Casos de Borda: Se dst ou src forem NULL: Crash (Segmentation Fault).
+Se len for 0: Retorna dst intacto sem operar na memória.
+
+------------------------------------------------------------------------------
+1.13 sc_memchr
+-------------------------------------------------------------------------------
+Protótipo: void *sc_memchr(const void *s, int c, size_t n);
+
+Parâmetros:
+s: Ponteiro para o bloco de dados onde a busca será feita.
+c: O valor em byte que estamos procurando.
+n: O limite máximo de bytes a serem inspecionados.
+
+Valor de Retorno: Retorna o endereço de memória exato (ponteiro) de onde o byte
+foi encontrado. Se revirar os n bytes e não encontrar o valor, retorna NULL.
+
+Descrição Detalhada: Funciona como uma varredura direta na memória RAM. Convertendo
+o ponteiro s para unsigned char *, ela inspeciona cada caixinha de memória. Assim
+que o valor de s[i] bate com o byte c, o loop para e calcula o endereço daquela 
+exata coordenada (s + i) para retornar.
+
+Casos de Borda: Se s for NULL: Crash (Segmentation Fault) ao tentar acessar o 
+endereço. Se n for 0: Retorna NULL na hora, pois nenhuma caixinha de memória foi
+aberta para busca.
+
+------------------------------------------------------------------------------
+1.14 sc_memcpm
+-------------------------------------------------------------------------------
+Protótipo: int sc_memcmp(const void *s1, const void *s2, size_t n);
+
+Parâmetros:
+s1: Ponteiro para o primeiro bloco de memória.
+s2: Ponteiro para o segundo bloco de memória.
+n: Quantidade de bytes a serem comparados.
+
+Valor de Retorno: Retorna 0 se os blocos forem idênticos nos primeiros n bytes.
+Se achar uma diferença, retorna a subtração dos bytes desalinhados (s1[i] - s2[i]).
+
+Descrição Detalhada: Compara a igualdade de dois blocos brutos de memória, byte por
+byte. Ela coloca os dois ponteiros lado a lado e faz uma subtração de seus valores 
+atuais. Se a subtração der zero, ela passa para o próximo byte. O primeiro byte que
+falhar quebra o laço e envia a diferença matemática de volta.
+
+Casos de Borda: Se s1 ou s2 forem NULL: Crash (Segmentation Fault). Se n for 0: 
+Retorna 0 (considera idênticos, pois nenhuma checagem foi feita).
+
+-------------------------------------------------------------------------------
+FUNÇÕES DE MANIPULAÇÃO DE STRINGS
+-------------------------------------------------------------------------------
+
+1.15 sc_strlen
+-------------------------------------------------------------------------------
+Protótipo: size_t sc_strlen(const char *s);
+
+Parâmetros:
+s: Ponteiro para a string que queremos medir.
+
+Valor de Retorno: Retorna o número total de caracteres encontrados antes do caractere
+nulo.
+
+Descrição Detalhada: Descobre o tamanho de uma string caminhando por ela de letra em
+letra. Ela inicia um contador i = 0 e avança enquanto s[i] != '\0'. O caractere nulo
+terminal não entra na contagem final.
+
+Casos de Borda: Se s for NULL: Crash (Segmentation Fault) ao tentar ler a primeira letra.
+Se a string for vazia (""): Retorna 0 imediatamente.
+
+------------------------------------------------------------------------------
+1.16 sc_strlcpy
+-------------------------------------------------------------------------------
+Protótipo: size_t sc_strlcpy(char *dst, const char *src, size_t siz);
+
+Parâmetros:
+dst: Buffer de destino onde o texto será copiado.
+src: A string original de origem.
+siz: O tamanho total disponível no buffer de destino (incluindo o espaço do \0).
+
+Valor de Retorno: Retorna o tamanho total da string que ele tentou criar 
+(ou seja, o tamanho de src).
+
+Descrição Detalhada: Uma alternativa segura para a antiga strcpy. Ela copia o texto de src
+para dst respeitando o limite rígido de siz - 1 caracteres. No final, ela coloca
+obrigatoriamente o caractere '\0' para fechar a string de forma segura, impedindo estouros
+de buffer.
+
+Casos de Borda: Se dst ou src forem NULL: Crash (Segmentation Fault). Se siz for 0: Ela não
+copia nada e não insere o \0 (já que o espaço é zero), mas ainda retorna o comprimento
+de src.
+
+------------------------------------------------------------------------------
+1.17 sc_strlcat
+-------------------------------------------------------------------------------
+Protótipo: size_t sc_strlcat(char *dst, const char *src, size_t siz);
+
+Parâmetros:
+dst: A string de destino que já possui um texto e receberá a continuação.
+src: A string que será colada no final de dst.
+siz: O tamanho total absoluto do buffer de destino.
+
+Valor de Retorno: Retorna o tamanho inicial de dst somado ao tamanho de src. 
+Se siz for menor que o texto já existente em dst, retorna siz + strlen(src).
+
+Descrição Detalhada: Concatena (junta) duas strings com proteção total contra
+estouros. Ela varre dst até achar o seu caractere nulo final, descobrindo onde
+o texto original termina. A partir desse ponto, ela cola os caracteres de src
+até o limite máximo de siz - 1, finalizando com o '\0'.
+
+Casos de Borda: Se os ponteiros forem NULL: Crash (Segmentation Fault). Se siz
+for 0 ou menor que o tamanho atual de dst: Ela não cola nada de src, garantindo
+a integridade do buffer.
+
+------------------------------------------------------------------------------
+1.18 sc_strlchr
+-------------------------------------------------------------------------------
+Protótipo: char *sc_strchr(const char *s, int c);
+
+Parâmetros:
+s: A string onde a busca será realizada.
+c: O caractere procurado.
+
+Valor de Retorno: Retorna o ponteiro para a primeira aparição de c na string. 
+Se o caractere não existir no texto, retorna NULL.
+
+Descrição Detalhada: Rastreia uma string da esquerda para a direita em busca da
+primeira ocorrência do caractere c. O laço varre o texto até achar o fim (\0). 
+Se o objetivo da busca for o próprio '\0', a função retorna com sucesso o ponteiro
+para o fim da string.
+
+Casos de Borda: Se s for NULL: Crash (Segmentation Fault).
+
+------------------------------------------------------------------------------
+1.19 sc_strrchr
+-------------------------------------------------------------------------------
+Protótipo: char *sc_strrchr(const char *s, int c);
+
+Parâmetros:
+s: A string onde a busca será realizada.
+c: O caractere procurado.
+
+Valor de Retorno: Retorna o ponteiro para a última aparição de c no texto.
+Se não achar, retorna NULL.
+
+Descrição Detalhada: Semelhante à sc_strchr, mas com foco invertido (reverse).
+Ela varre a string inteira até o final armazenando em um ponteiro temporário 
+toda vez que encontra o caractere c. Ao término da string, o ponteiro 
+temporário conterá a coordenada da última ocorrência encontrada.
+
+Casos de Borda: Se s for NULL: Crash (Segmentation Fault).
+
+------------------------------------------------------------------------------
+1.20 sc_strncmp
+-------------------------------------------------------------------------------
+Protótipo: int sc_strncmp(const char *s1, const char *s2, size_t n);
+
+Parâmetros:
+s1: Primeira string da comparação.
+s2: Segunda string da comparação.
+n: Limite máximo de caracteres a serem validados.
+
+Valor de Retorno: Retorna 0 se forem iguais nos primeiros n caracteres.
+Se houver divergência, retorna a diferença ASCII (s1[i] - s2[i]).
+
+Descrição Detalhada: Compara duas strings caractere por caractere com limite
+de comprimento. O laço avança enquanto as letras forem idênticas, nenhuma 
+string tiver chegado ao fim (\0) e o contador não tiver atingido o limite n.
+Assim que para, ela calcula a distância numérica dos caracteres.
+
+Casos de Borda: Se s1 ou s2 forem NULL: Crash (Segmentation Fault). Se 
+n for 0: Retorna 0 (considera idênticas por falta de amostragem).
+
+
+------------------------------------------------------------------------------
+1.21 sc_strnstr
+-------------------------------------------------------------------------------
+Protótipo: char *sc_strnstr(const char *big, const char *little, size_t len);
+
+Parâmetros:
+big: A string principal (o palheiro) onde faremos a busca.
+little: A sub-string (a agulha) que estamos tentando localizar.
+len: O limite máximo de caracteres em big a serem escaneados.
+
+Valor de Retorno: Se little for uma string vazia, retorna a própria string big.
+Se encontrar a agulha dentro do limite len, retorna o ponteiro para o início
+da sub-string em big. Caso contrário, retorna NULL.
+
+Descrição Detalhada: Procura por uma string menor dentro de uma string maior,
+mas sem olhar além do limite de caracteres definido por len. Para cada caractere
+de big, ela testa se os caracteres seguintes coincidem com os de little sem
+violar a fronteira len.
+
+Casos de Borda: Se big ou little forem NULL com len > 0: Crash
+(Segmentation Fault). Se len for 0 e little não for vazia: Retorna NULL 
+imediatamente.
+
+
+------------------------------------------------------------------------------
+1.22 sc_strdup
+-------------------------------------------------------------------------------
+Protótipo: char *sc_strdup(const char *s1);
+
+Parâmetros:
+s1: A string original que será duplicada.
+
+Valor de Retorno: Retorna um ponteiro para a nova string clonada na
+memória heap. Se o malloc falhar por falta de RAM, retorna NULL.
+
+Descrição Detalhada: Cria uma cópia carbono perfeita e independente de
+uma string. Ela mede a string original usando sc_strlen, adiciona mais 1 para
+a vaga do \0 e solicita essa memória ao sistema operacional via malloc. 
+Com o espaço garantido, usa sc_memcpy para mover os caracteres para o novo local.
+
+Casos de Borda: Se s1 for NULL: Crash (Segmentation Fault) ao tentar
+medir o tamanho.
+
+
+------------------------------------------------------------------------------
+FUNÇÕES DE ALLOCAÇÃO DINAMICA
+-------------------------------------------------------------------------------
+
+1.23 sc_calloc
+-------------------------------------------------------------------------------
+Protótipo: void *sc_calloc(size_t nmemb, size_t size);
+
+Parâmetros:
+nmemb: Número de elementos (membros) que queremos alocar no vetor.
+size: O tamanho em bytes de cada elemento individualmente.
+
+Valor de Retorno: Retorna o ponteiro para o início do bloco alocado e
+totalmente zerado. Se o sistema estiver sem memória ou houver estouro de
+multiplicação, retorna NULL.
+
+Descrição Detalhada: Aloca memória dinamicamente na Heap de forma limpa
+e segura. Ela multiplica nmemb * size para descobrir o tamanho total do bloco
+de memória necessário. Após alocar o espaço usando o malloc convencional,
+ela limpa e zera absolutamente todos os bytes usando a função sc_bzero,
+eliminando qualquer lixo de memória residual.
+
+Casos de Borda: Se nmemb ou size for 0: O comportamento padrão do C/POSIX
+permite retornar um ponteiro único válido que pode ser liberado com free
+mais tarde, ou retornar NULL. Na implementação padrão de segurança,
+retorna-se um bloco mínimo alocado ou NULL.
+
+Estouro de Inteiro: Se a multiplicação nmemb * size estourar a capacidade 
+máxima do tipo size_t, a função detecta o perigo e aborta retornando NULL
+para evitar alocações menores do que o esperado (vulnerabilidade de segurança).
+
+-------------------------------------------------------------------------------
+2. FUNÇÕES ADICIONAIS
+-------------------------------------------------------------------------------
+
+2.1 sc_substr
+-------------------------------------------------------------------------------
+Protótipo: char *sc_substr(char const *s, unsigned int start, size_t len);
+
+Parâmetros:
+s: A string original de onde o pedaço será extraído.
+start: O índice numérico (começando do zero) onde o corte deve iniciar.
+len: O tamanho máximo do pedaço que queremos recortar.
+
+Valor de Retorno: Retorna o ponteiro para a nova substring alocada dinamicamente. 
+Se a alocação de memória falhar, retorna NULL.
+
+Descrição Detalhada: Esta função entra em um texto e "recorta" um pedaço 
+específico de lá de dentro. Primeiro, ela faz uma checagem inteligente: se o 
+ponto de partida (start) for maior que o tamanho real da string s, significa que 
+o corte está fora do texto, então ela retorna uma string vazia "" alocada 
+em memória. Caso contrário, ela calcula o tamanho real a ser copiado 
+(que pode ser menor que len se a string original acabar antes), aloca esse espaço 
+adicionando +1 para o \0 com malloc, e copia os caracteres deslocando-se 
+a partir de s + start.
+
+Casos de Borda: Se s for NULL: Crash (Segmentation Fault) ao tentar ler o texto 
+se a função não possuir uma trava de segurança protetiva (if (!s) return NULL;).
+Se len for 0: A função aloca e retorna com sucesso uma string vazia contendo 
+apenas o caractere nulo "\0".
+
+------------------------------------------------------------------------------
+2.2 sc_strjoin
+-------------------------------------------------------------------------------
+Protótipo: char *sc_strjoin(char const *s1, char const *s2);
+
+Parâmetros:
+s1: A string que ficará na primeira parte da junção (o prefixo).
+s2: A string que será colada logo em seguida (o sufixo).
+
+Valor de Retorno: Retorna o ponteiro para a nova string combinada na memória Heap. 
+Se o malloc falhar, retorna NULL.
+
+Descrição Detalhada: Une duas strings em um espaço de memória totalmente novo. 
+O processo mede o comprimento de s1 e de s2, somando-os e adicionando +1 para o 
+caractere de fechamento \0. Ela chama o malloc com esse tamanho exato. Com a 
+nova área limpa e reservada, ela copia os caracteres de s1 para o início e cola 
+os caracteres de s2 logo em seguida, selando o final da nova string com \0. 
+As duas strings de origem ficam completamente intactas.
+
+Casos de Borda: Se s1 ou s2 for NULL: Crash (Segmentation Fault). Em implementações 
+de segurança estritas, se uma das strings for nula, a função pode tratar retornando 
+um clone da string que for válida. Se ambas as strings forem vazias (""): Aloca 
+e retorna com sucesso uma string vazia "\0".
+
+------------------------------------------------------------------------------
+2.3 sc_strtrim
+-------------------------------------------------------------------------------
+Protótipo: char *sc_strtrim(char const *s1, char const *set);
+
+Parâmetros:
+s1: A string original que passará pela limpeza nas pontas.
+set: Uma lista de caracteres que devem ser removidos 
+(ex: espaços, tabulações ou símbolos).
+
+Valor de Retorno: Retorna a string limpa alocada dinamicamente. Se falhar na
+memória, retorna NULL.
+
+Descrição Detalhada: Remove caracteres indesejados localizados apenas no início 
+e no fim de uma string. A função começa varrendo a string de frente para trás: 
+enquanto a letra atual estiver presente dentro da lista set, ela avança o 
+marcador de início. Depois, ela faz a mesma coisa de trás para frente, 
+recuando o marcador de fim toda vez que achar um caractere de set. 
+Com as duas fronteiras definidas, ela calcula a distância entre elas, aloca 
+a memória necessária via malloc e extrai aquele pedaço central usando a 
+lógica de substring.
+
+Casos de Borda: Se s1 ou set for NULL: Crash (Segmentation Fault).
+Se todos os caracteres de s1 estiverem contidos em set (ou se s1 for vazia): 
+Os marcadores se cruzam e a função retorna com sucesso uma string vazia "\0".
+
+
+
+------------------------------------------------------------------------------
+2.4 sc_split
+-------------------------------------------------------------------------------
+Protótipo: char sc_split(char const *s, char c);
+
+Parâmetros:
+s: A string principal que será fatiada.
+c: O caractere divisor (delimitador) usado como tesoura (ex: um espaço ' ').
+
+Valor de Retorno: Retorna um ponteiro para um array de ponteiros
+(uma matriz de strings). O último ponteiro desse array será obrigatoriamente 
+NULL. Retorna NULL em caso de falha de alocação de memória global.
+
+Descrição Detalhada: Slices uma frase grande em palavras individuais.
+Primeiro ela chama uma função auxiliar para contar quantas palavras existem 
+isolando os delimitadores repetidos. Aloca um vetor de ponteiros 
+(linhas da matriz) com tamanho igual ao número de palavras
+ + 1 (para a linha de segurança NULL).
+Percorre a string principal localizando onde cada palavra começa e termina, 
+mede o tamanho dela, faz um malloc individual para aquela palavra e copia as 
+letras correspondentes.
+Finaliza a última posição da matriz com NULL para indicar o fim do grid.
+
+Casos de Borda: Se s for NULL: Retorna NULL imediatamente protegendo 
+contra Crash. Se s for uma string vazia ("") ou contiver apenas delimitadores: 
+Aloca e retorna um array contendo apenas uma posição preenchida com NULL.
+
+------------------------------------------------------------------------------
+2.5 sc_itoa
+-------------------------------------------------------------------------------
+Protótipo: char *sc_itoa(int n);
+
+Parâmetros:
+n: O número inteiro (positivo ou negativo) que será transformado em texto.
+
+Valor de Retorno: Retorna uma string alocada dinamicamente contendo a 
+representação em texto do número inteiro. Retorna NULL se a alocação falhar.
+
+Descrição Detalhada: Faz o caminho inverso da conversão (Inteiro para ASCII).
+Ela faz um cálculo matemático para descobrir quantos dígitos o número possui 
+(dividindo por 10 sucessivamente). Se o número for negativo, adiciona uma vaga 
+para o caractere de menos '-'. Aloca o espaço exato na memória Heap.
+Preenche a string de trás para frente, extraindo o último dígito do número usando 
+o operador de resto (n % 10), convertendo-o para caractere somando 48 
+(valor do '0' na tabela ASCII) e colocando-o na string, dividindo o número por 
+10 logo em seguida para avançar. Trata o caso especial do menor inteiro possível 
+do C (-2147483648) para evitar estouros de sinal.
+
+Casos de Borda: Se n for 0: Aloca espaço para 2 caracteres e retorna com sucesso 
+a string "0".
+Nota de ponteiros: Esta função não recebe ponteiros, não havendo risco de 
+NULL em seus argumentos de entrada.
+
+------------------------------------------------------------------------------
+2.6 sc_strmapi
+-------------------------------------------------------------------------------
+Protótipo: char *sc_strmapi(char const *s, char (*f)(unsigned int, char));
+
+Parâmetros:
+s: A string que servirá de matéria-prima.
+f: Um ponteiro para uma função mapeadora que aceita o índice (unsigned int) e o 
+caractere atual (char), retornando um novo caractere transformado.
+
+Valor de Retorno: Retorna uma nova string modificada alocada dinamicamente. 
+Retorna NULL se o malloc falhar.
+
+Descrição Detalhada: Cria uma string completamente nova aplicando uma função de 
+transformação em cada caractere da string original. Ela aloca um espaço do mesmo 
+tamanho de s na memória Heap. Depois, percorre o texto original com um laço e 
+executa a função f(i, s[i]). O resultado que a função f devolver é guardado na 
+mesma posição correspondente da nova string. A string original permanece intacta.
+
+Casos de Borda: Se s ou f for NULL: Crash (Segmentation Fault) ao tentar ler o 
+texto ou disparar uma chamada para um endereço de função inexistente. Se s for 
+vazia (""): Aloca e retorna com sucesso uma string vazia contendo apenas "\0".
+
+------------------------------------------------------------------------------
+2.7 sc_striteri
+-------------------------------------------------------------------------------
+Protótipo: void sc_striteri(char *s, void (*f)(unsigned int, char*));
+
+Parâmetros:
+s: A string original que será modificada diretamente no local (in-place).
+f: Um ponteiro para uma função que recebe o índice atual e o endereço de 
+memória do caractere (char *), sem retornar nada.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Modifica a string original diretamente, sem alocar 
+memória nova. Ela percorre a string s usando um loop e, em cada índice i, chama 
+a função f passando o índice e a coordenada exata da letra atual: f(i, &s[i]). 
+Como a função f recebe o ponteiro direto da letra, qualquer alteração feita por 
+ela muda o texto original imediatamente.
+
+Casos de Borda: Se s ou f for NULL: Crash (Segmentation Fault) imediato. Se a 
+string for vazia (""): O laço identifica o \0 na primeira verificação e encerra 
+a função sem executar f.
+
+------------------------------------------------------------------------------
+2.8 sc_putchar_fd
+-------------------------------------------------------------------------------
+Protótipo: void sc_putchar_fd(char c, int fd);
+
+Parâmetros:
+c: O caractere que será escrito.
+fd: O descritor do arquivo de destino (ex: 1 para Saída Padrão / Tela, 2 para 
+Erro Padrão, ou o ID de um arquivo criado).
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Escreve um único caractere no canal de saída especificado 
+por fd. Ela faz isso invocando diretamente a chamada de sistema de baixo nível 
+write(fd, &c, 1).
+
+Casos de Borda: Se fd for inválido ou negativo: A chamada de sistema write 
+falha internamente e define o código de erro, mas a função não causa um 
+Crash no programa.
+
+------------------------------------------------------------------------------
+2.9 sc_putstr_fd
+-------------------------------------------------------------------------------
+Protótipo: void sc_putstr_fd(char *s, int fd);
+
+Parâmetros:
+s: A string (texto) que será impressa.
+fd: O canal ou arquivo de destino onde o texto será inserção.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Envia uma cadeia de texto completa para o descritor de 
+arquivo. Ela primeiro mede o tamanho da string 
+(usando uma lógica parecida com a do sc_strlen) e depois faz o disparo bruto 
+chamando a função de sistema: write(fd, s, tamanho).
+
+Casos de Borda: Se s for NULL: Crash (Segmentation Fault) ao tentar medir 
+ou ler os caracteres se não houver um teste protetivo inicial. Se a string 
+for  vazia (""): A função calcula tamanho 0 e o write não envia nenhum caractere, 
+encerrando com segurança.
+
+------------------------------------------------------------------------------
+2.10 sc_putendl_fd
+-------------------------------------------------------------------------------
+Protótipo: void sc_putendl_fd(char *s, int fd);
+
+Parâmetros:
+s: A string a ser impressa na tela ou arquivo.
+fd: O canal de descritor de destino.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Executa exatamente a mesma tarefa da sc_putstr_fd, 
+imprimindo o texto contido em s no canal fd, mas adiciona automaticamente uma 
+quebra de linha ('\n') no final. Ela faz isso de forma limpa reaproveitando 
+códigos: chama sc_putstr_fd(s, fd) e logo em seguida executa 
+sc_putchar_fd('\n', fd).
+
+Casos de Borda: Se s for NULL: Crash (Segmentation Fault) causado durante a 
+execução da etapa interna de impressão do texto. Se a string for vazia (""): 
+O texto não imprime nada, mas a quebra de linha '\n' é escrita com sucesso 
+no arquivo.
+
+------------------------------------------------------------------------------
+2.11 sc_putnbr_fd
+-------------------------------------------------------------------------------
+Protótipo: void sc_putnbr_fd(int n, int fd);
+
+Parâmetros:
+n: O número inteiro que queremos imprimir como texto na saída.
+fd: O descritor do arquivo ou canal receptor.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Imprime um número inteiro transformando seus dígitos em 
+caracteres de texto e enviando-os diretamente para o canal fd, sem alocar 
+memória Heap. Ela usa uma lógica recursiva muito inteligente: Se o número for 
+negativo, ela imprime o caractere de menos '-' e converte o número para 
+positivo (tratando os limites de estouro).
+Se o número for maior ou igual a 10, ela chama a si mesma passando n / 10 para 
+tratar primeiro os dígitos da frente.
+Na volta da recursão, ela isola o último dígito fazendo (n % 10) + '0' e 
+imprime o caractere correspondente usando a sc_putchar_fd.
+
+Casos de Borda: Trata de forma nativa e robusta o caso limite -2147483648, 
+dividindo a impressão do sinal e dos caracteres em blocos para evitar inversões 
+inválidas de sinal. Se fd for inválido: A função executa toda a matemática 
+recursiva normalmente, mas os caracteres são descartados silenciosamente pelo 
+sistema operacional quando o write tenta gravá-los.
+
+
+------------------------------------------------------------------------------
+3. FUNÇÕES DE LISTA LIGADA
+-------------------------------------------------------------------------------
+
+3.1 sc_lstnew
+-------------------------------------------------------------------------------
+Protótipo: t_list *sc_lstnew(void *content);
+
+Parâmetros:
+content: O ponteiro genérico contendo o dado/conteúdo que se deseja armazenar 
+dentro deste novo nó.
+
+Valor de Retorno: Retorna o ponteiro para o novo nó alocado e configurado. 
+Se a alocação de memória com malloc falhar, retorna NULL.
+
+Descrição Detalhada: Esta função funciona como a fundação de uma lista encadeada, 
+sendo responsável por criar um novo "elo" isolado.
+Ela solicita ao sistema operacional o espaço de memória exato para a estrutura 
+usando malloc(sizeof(t_list)).
+Em seguida, ela acessa o interior do nó alocado através do operador de seta (->) 
+e atribui o ponteiro content recebido ao campo new_node->content.
+Por fim, como este elo nasce isolado, ela define obrigatoriamente 
+new_node->next = NULL, blindando o nó contra lixos de memória.
+
+Casos de Borda: Se content for NULL: A função opera normalmente. Ela cria o nó com 
+sucesso, mas o campo content apontará para NULL.
+Parâmetro de tamanho (size_t): Não se aplica (não recebe tamanho como argumento).
+
+------------------------------------------------------------------------------
+3.2 sc_lstadd_front
+-------------------------------------------------------------------------------
+Protótipo: void sc_lstadd_front(t_list lst, t_list *new);
+
+Parâmetros:
+lst: O endereço do ponteiro que aponta para o primeiro elemento atual da lista 
+(ponteiro duplo).
+new: O ponteiro para o novo nó que será inserido na linha de frente da lista.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Insere um nó existente no primeiríssimo lugar da fila, 
+transformando-o na nova "cabeça" da lista.
+Para não perder a referência do resto da lista, ela faz o ponteiro de próximo 
+do novo nó apontar para onde a lista começava originalmente: new->next = *lst.
+Com a conexão estabelecida de forma segura, ela atualiza o ponteiro master da 
+lista para apontar diretamente para este novo elemento: *lst = new.
+
+Casos de Borda: Se lst for NULL: Crash (Segmentation Fault) se tentar 
+desreferenciar (*lst). É vital proteger com if (!lst) return;.
+Se *lst for NULL (Lista originalmente vazia): A função funciona perfeitamente; 
+o new->next vira NULL e new se torna legitimamente o único e primeiro nó da lista.
+Se new for NULL: A função não deve fazer nada, protegendo a integridade da lista.
+
+------------------------------------------------------------------------------
+3.3 sc_lstsize
+-------------------------------------------------------------------------------
+Protótipo: int sc_lstsize(t_list *lst);
+
+Parâmetros:
+lst: O ponteiro para o nó inicial da lista que se deseja medir.
+
+Valor de Retorno: Retorna a quantidade total de nós encontrados na lista 
+(um número inteiro 0 ou maior).
+
+Descrição Detalhada: Conta quantos elos existem na corrente da lista. 
+Ela inicializa uma variável contadora em zero e um ponteiro auxiliar apontando 
+para o início: t_list *current = lst. Usando um laço while (current != NULL), 
+ela avança o ponteiro de elo em elo (current = current->next) e incrementa o 
+contador a cada passo dado, parando somente quando atingir o vazio final.
+
+Casos de Borda: Se lst for NULL (Lista vazia): O laço nem inicia e a função 
+retorna com sucesso o valor 0.
+
+------------------------------------------------------------------------------
+3.4 sc_lstlast
+-------------------------------------------------------------------------------
+Protótipo: t_list *sc_lstlast(t_list *lst);
+
+Parâmetros:
+lst: O ponteiro para o início da lista que será percorrida.
+
+Valor de Retorno: Retorna o ponteiro para o último nó da lista 
+(o elo cujo campo next aponta para NULL). Se a lista estiver vazia, retorna NULL.
+
+Descrição Detalhada: Varre a lista inteira até encontrar o último elemento vivo. 
+Diferente da função de contagem, o laço aqui inspeciona o elemento da frente: 
+while (lst && lst->next != NULL). Isso faz com que o ponteiro pare exatamente 
+em cima do último nó válido, permitindo que a função retorne a coordenada dele.
+
+Casos de Borda: Se lst for NULL: A condição do laço falha imediatamente e a 
+função retorna NULL com segurança.
+
+------------------------------------------------------------------------------
+3.5 sc_lstadd_back
+-------------------------------------------------------------------------------
+Protótipo: void sc_lstadd_back(t_list lst, t_list *new);
+
+Parâmetros:
+lst: O endereço do ponteiro que aponta para o começo da lista (ponteiro duplo).
+new: O ponteiro para o novo nó que será anexado na última posição.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Adiciona um nó no final da lista.
+Se a lista estiver completamente vazia (*lst == NULL), ela delega a função de 
+liderança para o novo nó, chamando sc_lstadd_front(lst, new).
+Se a lista já possuir elementos, ela chama a função auxiliar sc_lstlast(*lst) 
+para rastrear e obter o endereço do último nó atual.
+Com o endereço do último elo em mãos, ela altera o ponteiro de próximo dele 
+(que antes era NULL) para apontar para o novo nó: last_node->next = new.
+
+Casos de Borda:Se lst for NULL: Crash (Segmentation Fault) ao tentar 
+verificar *lst. Requer validação inicial de segurança.
+Se new for NULL: A função encerra sem alterar nada para não corromper a lista.
+
+------------------------------------------------------------------------------
+3.6 sc_lstdelone
+-------------------------------------------------------------------------------
+Protótipo: void sc_lstdelone(t_list *lst, void (*del)(void *));
+
+Parâmetros:
+lst: O ponteiro para o nó específico que deve ser deletado.
+del: Um ponteiro de função usado para liberar adequadamente o conteúdo 
+armazenado no campo content.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Libera e destrói um único nó isolado da memória sem mexer 
+nos nós vizinhos.
+Primeiro, ela executa a função de limpeza customizada passando o ponteiro do 
+conteúdo: del(lst->content). Isso garante que se o conteúdo for uma string alocada 
+por malloc, por exemplo, ela seja limpa primeiro.
+Em seguida, ela destrói a casca externa da estrutura chamando o free(lst).
+
+Nota: Esta função não altera ponteiros de próximo (next), servindo apenas para 
+destruição de nós já desvinculados da lista.
+
+Casos de Borda: Se lst ou del for NULL: A função retorna imediatamente para evitar 
+Crash ao tentar disparar uma função inexistente ou liberar memória nula.
+
+------------------------------------------------------------------------------
+3.7 sc_lstclear
+-------------------------------------------------------------------------------
+Protótipo: void sc_lstclear(t_list lst, void (*del)(void *));
+
+Parâmetros:
+lst: O endereço do ponteiro da lista (ponteiro duplo) que será completamente 
+apagada.
+del: O ponteiro de função para limpar o conteúdo de cada nó.
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Executa uma limpeza total, eliminando a lista inteira da 
+memória do início ao fim e zerando o ponteiro master. 
+Ela usa um laço de repetição:
+Salva o endereço do próximo nó em uma variável temporária: tmp = (*lst)->next.
+Chama a função sc_lstdelone(*lst, del) para apagar o nó atual com segurança.
+Move o ponteiro da lista para a variável temporária: *lst = tmp.
+Repete o processo até que todos os nós sejam desintegrados. No final, 
+o ponteiro original passado vira NULL.
+
+Casos de Borda: Se lst ou del for NULL: Retorna sem fazer nada.
+Se *lst for NULL (Lista já limpa/vazia): O laço não executa e a função encerra 
+com sucesso.
+
+------------------------------------------------------------------------------
+3.8 sc_lstiter
+-------------------------------------------------------------------------------
+Protótipo: void sc_lstiter(t_list *lst, void (*f)(void *));
+
+Parâmetros:
+lst: O ponteiro para o início da lista.
+f: Um ponteiro de função que realiza alguma operação sobre o conteúdo de cada 
+nó (função de iteração).
+
+Valor de Retorno: Nenhum (função void).
+
+Descrição Detalhada: Funciona como um passador de tarefas. Ela percorre a lista 
+do começo ao fim usando um laço while (lst). A cada nó visitado, ela pega o 
+conteúdo guardado e passa como argumento para a função aplicada: f(lst->content). 
+Logo em seguida, move-se para o próximo nó (lst = lst->next). Útil para imprimir 
+todos os elementos ou modificar dados no local.
+
+Casos de Borda: Se lst ou f for NULL: A função retorna imediatamente sem operar, 
+blindando o programa contra travamentos por ponteiros nulos.
+
+------------------------------------------------------------------------------
+3.9 sc_lstmap
+-------------------------------------------------------------------------------
+Protótipo: t_list *sc_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+Parâmetros:
+lst: O ponteiro para o início da lista original que será clonada/mapeada.
+f: Um ponteiro de função que transforma o conteúdo de um nó e retorna um 
+ponteiro  para o novo conteúdo criado.
+del: A função de limpeza usada para apagar tudo caso ocorra uma falha de 
+memória  no meio do caminho.
+
+Valor de Retorno: Retorna o ponteiro para a nova lista criada e transformada. 
+Se o malloc falhar em qualquer etapa da clonagem, ela apaga tudo o que já tinha 
+criado usando sc_lstclear e retorna NULL.
+
+Descrição Detalhada: Cria uma lista totalmente nova baseada na lista antiga, 
+aplicando uma transformação nos dados.
+Percorre a lista lst original. Para cada nó, ela roda 
+novo_conteudo = f(lst->content).Cria um novo nó com esse conteúdo gerado 
+chamando  novo_no = sc_lstnew(novo_conteudo).
+Mecanismo de Segurança: Se novo_no falhar por falta de RAM, a função entra em 
+modo de emergência: destrói o novo_conteudo com del, limpa toda a nova lista 
+parcial que já tinha construído até ali usando sc_lstclear e aborta 
+retornando NULL.Se tudo correr bem, ela anexa o novo nó no fim da nova lista 
+usando sc_lstadd_back e avança na lista original.
+
+Casos de Borda:Se lst, f ou del for NULL: Retorna NULL 
+imediatamente para proteção.
+Se a lista original for vazia: Retorna NULL com sucesso 
+(uma cópia de uma lista vazia é uma lista vazia).
+
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

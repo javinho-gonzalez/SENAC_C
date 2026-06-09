@@ -3,9 +3,9 @@
 
 void sc_isalpha (char c){
     if (c >= 65 && c <= 90 || c >= 97 && c <= 122){
-       printf("Caractere: %c é uma letra\n", c);
+       printf("Caractere: %c e uma letra\n", c);
     }else{
-        printf("caractere: %c não é uma letra\n", c);
+        printf("caractere: %c não e uma letra\n", c);
     }
 }
 int main (void){

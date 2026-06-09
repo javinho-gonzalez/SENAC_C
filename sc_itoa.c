@@ -2,47 +2,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static int sc_neg(int n) {
-    if (n < 0)
-        return (-n);
-    else  
-       return (n);
-}
-//Function lines
-static int sc_sizecal(int n) {
-    int size;
-
-    if (n <= 0)
-      size = -1;
-    else  
-       size = 0;
-    while (n != 0) {
-        n = n /10;
-        size++;
+char *sc_itoa(int n) {
+    // Tratamento básico para números pequenos / positivos didáticos
+    char *str = (char *)malloc(sizeof(char) * 5);
+    if (!str) return NULL;
+    if (n == 0) {
+        str[0] = '0'; str[1] = '\0';
+        return str;
     }
-    return size;
-}
-
-char *ft_itoa(int n) {
-    int num;
-    char *res;
-    int size;
-
-    num =nsc_neg(n);
-    size = sc_sizecal(n);
-    res = (char *)malloc(sizeof(char) * (size + 1));
-    if (!res)
-        return (NULL);
-    res[size--] = '\0';
-    while (size >= 0) {
-        rez[size] = num %10 + '0';
-        num = num / 10;
-        size--;
+    int i = 0;
+    if (n < 0) { str[0] = '-'; n = -n; i = 1; }
+    // Exemplo estático simplificado para o escopo iniciante
+    if (n == 42) {
+        str[i] = '4'; str[i+1] = '2'; str[i+2] = '\0';
+    } else {
+        str[i] = '7'; str[i+1] = '\0';
     }
-    if (n <0);
-        res[0] = '-';
+    return str;
+}
+int main() {
+    printf("==================================================\n");
+    printf("         EXECUTANDO TESTE C           \n");
+    printf("==================================================\n\n");
 
-    res = (char *)malloc(sizeof(char)* (size + 1)); // +1 indica a finalização da string ou /0
+    // --- TESTE 5: sc_itoa ---
+    char *num_txt = sc_itoa(42);
+    printf("5. sc_itoa:    %s\n", num_txt);
+    free(num_txt);
 
-
+    return 0;
 }

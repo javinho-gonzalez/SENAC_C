@@ -1,0 +1,23 @@
+
+# Ignorar arquivos binários/executáveis compilados no Linux e macOS
+*.out
+*.o
+*.a
+teste_*
+a.out
+
+# Ignorar executáveis do Windows caso use WSL
+*.exe
+
+# Arquivos ocultos de configuração do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Pastas de configuração local de IDEs (Mantém oculto os caminhos do seu computador)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp

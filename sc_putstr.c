@@ -1,4 +1,4 @@
-/*#include <unistd.h>
+#include <unistd.h>
 #include <stdio.h>
 
 void sc_putstr(char *str)
@@ -16,4 +16,4 @@ int main ()
     sc_putstr(str);
     write(1,"\n",1);
     return 0;
-}*/
+}

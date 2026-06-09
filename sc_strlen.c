@@ -1,4 +1,4 @@
-/*#include <unistd.h>
+#include <unistd.h>
 #include <stdio.h>
 
 int sc_strlen (char *str)
@@ -15,4 +15,4 @@ int main ()
     int length = sc_strlen(str);
     printf("Length of the string: %d \n",length);
     return 0;
-}*/
+} 

@@ -26,26 +26,12 @@ void sc_lstadd_front(t_list **lst, t_list *new) {
     new->next = *lst;
     *lst = new;
 }
-
 int main(void) {
-    t_list *minha_lista = NULL; //Crie uma lista
-    t_list *no_b = sc_lstnew("Vagão B"); // Criei um NO
-    sc_lstadd_front(&minha_lista: %s\n\n", (char *)minha_lista->content);
-    t_list *no_a =sc_lstnew("Vagão A");
-    sc_lstadd_front(&minha_lista, no_a);
-    printf("Novo inicio da lista: %s\n", (char *)minha_lista->content);
-    printf("Proximo elemento da lista(next): %s\n",(char *)minha_lista->next->content);
-    free (no_a);
-    free (no_b);
-    return 0;
-}
 
+    printf("==================================================\n");
+    printf("         EXECUTANDO TESTE C           \n");
+    printf("==================================================\n\n");
 
-
-
-
-
-int main(void) {
     char *txt1 = "Primeiro No";
     char *txt2 = "Segundo No";
     char *txt3 = "Terceiro No";
